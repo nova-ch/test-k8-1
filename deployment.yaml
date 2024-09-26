@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mlc-deployment
+  namespace: c-namespace
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: mlc-app
+  template:
+    metadata:
+      labels:
+        app: mlc-app
+    spec:
+      containers:
+      - name: mlc-container
+        image: novach/your-app:latest
+        ports:
+        - containerPort: 5001
+        volumeMounts:
+        - mountPath: "/path/in/container"
+          name: mlc-storage
+      volumes:
+      - name: mlc-storage
+        persistentVolumeClaim:
+          claimName: mlc-pvc
+
