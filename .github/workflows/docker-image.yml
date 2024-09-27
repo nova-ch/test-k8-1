@@ -1,4 +1,4 @@
-name: Docker Build and Push
+name: Build and Push Docker Image
 
 on:
   push:
@@ -27,5 +27,5 @@ jobs:
       with:
         context: .
         push: true
-        tags: novach/your-app:latest
+        tags: novach/ml-app:v0
 

@@ -1,28 +1,27 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: mlc-deployment
-  namespace: c-namespace
+  name: ml-training-deployment
+  namespace: ml-training
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
-      app: mlc-app
+      app: ml-training-app
   template:
     metadata:
       labels:
-        app: mlc-app
+        app: ml-training-app
     spec:
       containers:
-      - name: mlc-container
-        image: novach/your-app:latest
-        ports:
-        - containerPort: 5001
+      - name: ml-training-container
+        image: novach/your-app:latest  # Use the image built and pushed from the CI/CD pipeline
+        command: ["python", "test_train.py"]
         volumeMounts:
-        - mountPath: "/path/in/container"
-          name: mlc-storage
+        - mountPath: "/app/output"
+          name: output-volume
       volumes:
-      - name: mlc-storage
+      - name: output-volume
         persistentVolumeClaim:
-          claimName: mlc-pvc
+          claimName: ml-training-pvc
 

@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mlc-deployment
+  namespace: default  # Or your specific namespace
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: mlc-app  # This should match the labels in the template
+  template:
+    metadata:
+      labels:
+        app: mlc-app  # Ensure this matches the selector.labels
+    spec:
+      containers:
+      - name: mlc-container
+        image: novach/your-app:latest
+        ports:
+        - containerPort: 5001
+
