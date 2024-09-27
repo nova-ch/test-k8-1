@@ -1,0 +1,21 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: ml-training-job
+  namespace: ml-training
+spec:
+  template:
+    spec:
+      containers:
+      - name: ml-training-container
+        image: novach/your-app:latest
+        command: ["python", "test_train.py"]
+        volumeMounts:
+        - mountPath: "/app/output"
+          name: output-volume
+      restartPolicy: Never
+      volumes:
+      - name: output-volume
+        persistentVolumeClaim:
+          claimName: ml-training-pvc
+
