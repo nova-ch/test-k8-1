@@ -7,4 +7,4 @@ scikit-learn
 h5py
 mlflow
 json
-cx_Oracle
+oracledb

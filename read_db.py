@@ -1,14 +1,15 @@
-import cx_Oracle
+
 import pandas as pd
 import json
 import oracledb
 from time import time
 
+print("Import finished")
 
 output_dir = "/app/output"
 
 # Establish a connection to Oracle
-conn = cx_Oracle.connect(user=database_user, password=database_password, dsn=dsn)
+conn = oracledb.connect(user=database_user, password=database_password, dsn=dsn)
 
 query = """
 SELECT * 
