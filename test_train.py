@@ -2,12 +2,12 @@ import numpy as np
 from sklearn.model_selection import train_test_split
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense
-import mlflow
-import mlflow.tensorflow
+# import mlflow
+# import mlflow.tensorflow
 import os
 
 # Enable auto-logging for MLflow
-mlflow.tensorflow.autolog()
+# mlflow.tensorflow.autolog()
 
 # Define output path
 output_dir = "/app/output"
@@ -31,37 +31,37 @@ model = Sequential([
 model.compile(optimizer='adam', loss='mse', metrics=['mae'])
 
 # Start an MLflow run
-with mlflow.start_run() as run:
+# with mlflow.start_run() as run:
     # Train the model
-    history = model.fit(X_train, y_train, epochs=10, batch_size=32, validation_split=0.2)
+history = model.fit(X_train, y_train, epochs=10, batch_size=32, validation_split=0.2)
 
     # Evaluate the model
-    loss, mae = model.evaluate(X_test, y_test, verbose=2)
+loss, mae = model.evaluate(X_test, y_test, verbose=2)
 
     # Log additional detailed metrics manually (in addition to autologging)
-    mlflow.log_metric("test_loss", loss)
-    mlflow.log_metric("test_mae", mae)
+    # mlflow.log_metric("test_loss", loss)
+    # mlflow.log_metric("test_mae", mae)
 
     # Save the training history as an artifact (example plot)
-    try:
-        import matplotlib.pyplot as plt
-        plt.plot(history.history['loss'], label='loss')
-        plt.plot(history.history['val_loss'], label='val_loss')
-        plt.xlabel('Epoch')
-        plt.ylabel('Loss')
-        plt.legend()
-        plt.title('Training and Validation Loss')
-        plt.savefig(os.path.join(output_dir, "loss_plot.png"))
-        mlflow.log_artifact(os.path.join(output_dir, "loss_plot.png"))
-    except ImportError:
-        print("matplotlib is not installed, skipping plot generation")
+try:
+    import matplotlib.pyplot as plt
+    plt.plot(history.history['loss'], label='loss')
+    plt.plot(history.history['val_loss'], label='val_loss')
+    plt.xlabel('Epoch')
+    plt.ylabel('Loss')
+    plt.legend()
+    plt.title('Training and Validation Loss')
+    plt.savefig(os.path.join(output_dir, "loss_plot.png"))
+    # mlflow.log_artifact(os.path.join(output_dir, "loss_plot.png"))
+except ImportError:
+    print("matplotlib is not installed, skipping plot generation")
 
     # Save the model to the output directory
-    model_save_path = os.path.join(output_dir, "model.h5")
-    model.save(model_save_path)
-    mlflow.log_artifact(model_save_path)
+model_save_path = os.path.join(output_dir, "model.h5")
+model.save(model_save_path)
+    # mlflow.log_artifact(model_save_path)
 
     # Output to check if everything went fine
-    print(f"Model training and logging finished with run_id: {run.info.run_id}")
-    print(f"Model saved at {model_save_path}")
+    # print(f"Model training and logging finished with run_id: {run.info.run_id}")
+print(f"Model saved at {model_save_path}")
 
